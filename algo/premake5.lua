@@ -43,6 +43,9 @@ project "algo"
 	language "C++"
 	kind "ConsoleApp"
 
+	pchheader "algo_pch.hpp"
+	pchsource "src/algo_pch.cpp"
+
 	files {
 		"src/core/**.cpp",
 		"src/core/**.hpp",

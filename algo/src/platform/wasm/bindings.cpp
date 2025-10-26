@@ -1,20 +1,19 @@
 #ifdef SYSTEM_EMSCRIPTEN
 
+// Precompiled
+#include <algo_pch.hpp>
+//
+
 #include <shapes.hpp>
 
-#include <glm/vec3.hpp>
 #include <emscripten/bind.h>
-
-#include <cstdint>
-#include <vector>
-#include <utility>
 
 EMSCRIPTEN_BINDINGS(algo) {
 
     using namespace glm;
     using namespace std;
     using namespace emscripten;
-    
+
     using namespace algo;
     
     emscripten::function("gen_vec3", &gen_vec3);

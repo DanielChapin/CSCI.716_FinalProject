@@ -1,9 +1,9 @@
 
-#include <shapes.hpp>
+// Precompiled
+#include <algo_pch.hpp>
+//
 
-#include <cstdint>
-#include <utility>
-#include <vector>
+#include <shapes.hpp>
 
 namespace algo
 {

@@ -1,10 +1,11 @@
 #if defined(SYSTEM_WINDOWS) || defined(SYSTEM_LINUX)
 
-#include <print>
-#include <string>
+// Precompiled
+#include <algo_pch.hpp>
+//
 
 #include <shapes.hpp>
-#include <glm/vec3.hpp>
+
 #include <glm/gtx/string_cast.hpp>
 
 using std::string;
