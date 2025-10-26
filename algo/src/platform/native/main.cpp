@@ -12,7 +12,7 @@ using glm::vec3;
 
 int main()
 {
-    std::println("{}", glm::to_string(gen_vec3()));
+    std::println("{}", glm::to_string(algo::gen_vec3()));
 }
 
 #endif
