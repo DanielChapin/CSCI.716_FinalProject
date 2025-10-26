@@ -2,7 +2,7 @@
 TARGET_OUTPUT = "bin/%{cfg.architecture}-%{cfg.buildcfg}-%{cfg.system}"
 OBJECT_OUTPUT = "bin-int/%{cfg.architecture}-%{cfg.buildcfg}-%{cfg.system}"
 
-workspace "CSCI-716"
+workspace "CSCI-716_Project"
 	startproject "CSCI-716_FINALPROJECT"
 	architecture "x64"
 	staticruntime "on"
@@ -48,14 +48,29 @@ workspace "CSCI-716"
 		architecture "wasm32"
 		targetextension ".html" 
 
+		includedirs {
+			"../vendor/emsdk/upstream/emscripten/system/include",
+		}
+		
+		libdirs {
+			"../vendor/emsdk/upstream/emscripten/system/lib",
+		}
+
+		links {
+			"embind"
+		}
+
 		linkoptions {
-			"--shell-file html_template.html"
+			"--shell-file html_template.html",
+			"-s EXPORT_NAME='create_%{prj.name}'",
+			"-s MODULARIZE=1",
+			"--emit-tsd %{prj.name}.d.ts"
 		}
 		
 	filter {}
 
 -- Project definition
-project "CSCI-716_FINALPROJECT"
+project "algo"
 	language "C++"
 	kind "ConsoleApp"
 
