@@ -33,39 +33,8 @@ workspace "CSCI-716_Project"
 
     filter "system:emscripten"
         defines "SYSTEM_EMSCRIPTEN"
-		
-		-- If we need to target wasm64 in the future we should add these options:
-		-- 
-		-- buildoptions { 
-        --     "-sWASM=1",
-        --     "-sMEMORY64=1" 
-        -- }
-        -- linkoptions { 
-        --     "-mwasm64", 
-        --     "-sMEMORY64=1" 
-        -- }
-		-- 
 		architecture "wasm32"
 		targetextension ".html" 
-
-		includedirs {
-			"vendor/emsdk/upstream/emscripten/system/include",
-		}
-		
-		libdirs {
-			"vendor/emsdk/upstream/emscripten/system/lib",
-		}
-
-		links {
-			"embind"
-		}
-
-		linkoptions {
-			"--shell-file html_template.html",
-			"-s EXPORT_NAME='create_%{prj.name}'",
-			"-s MODULARIZE=1",
-			"--emit-tsd %{prj.name}.d.ts"
-		}
 		
 	filter {}
 
@@ -75,9 +44,9 @@ project "algo"
 	kind "ConsoleApp"
 
 	files {
-		"src/**.cpp",
-		"src/**.hpp",
-		"src/**.h",
+		"src/core/**.cpp",
+		"src/core/**.hpp",
+		"src/core/**.h",
 		"include/**.hpp",
 		"include/**.h",
 	}
@@ -89,10 +58,50 @@ project "algo"
 		"vendor/glm",
 	}
 
+	defines {
+		"GLM_ENABLE_EXPERIMENTAL"
+	}
+
+	filter "system:linux or windows"
+		files {
+			"src/platform/native/**.cpp",
+			"src/platform/native/**.hpp",
+			"src/platform/native/**.h"
+		}
+
 	-- For windows MinGW toolchain, we need to link against stdc++exp (experimental C++ runtime library)
 	-- to use newer functions like std::println
 	filter { "action:gmake", "system:windows" }
 		links "stdc++exp"
+
+	filter "system:emscripten"
+		includedirs "vendor/emsdk/upstream/emscripten/system/include" 
+		libdirs "vendor/emsdk/upstream/emscripten/system/lib" 
+		links "embind"
+
+		-- If we need to target wasm64 in the future we should add these options:
+		-- 
+		-- buildoptions { 
+        --     "-sWASM=1",
+        --     "-sMEMORY64=1" 
+        -- }
+        -- linkoptions { 
+        --     "-mwasm64", 
+        --     "-sMEMORY64=1" 
+        -- }
+
+		files {
+			"src/platform/wasm/**.cpp",
+			"src/platform/wasm/**.hpp",
+			"src/platform/wasm/**.h"
+		}
+
+		linkoptions {
+			"--shell-file html_template.html",
+			"-s EXPORT_NAME='create_%{prj.name}'",
+			"-s MODULARIZE=1",
+			"--emit-tsd %{prj.name}.d.ts"
+		}
 
 	filter {}
 

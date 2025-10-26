@@ -3,7 +3,11 @@
 - Daniel Chapin (dsc4984@rit.edu)
 - Klim Fedorchuk (kf2848@rit.edu)
 
-## Website & Algorithm Implementation
+## Algorithm Implementation
+
+Reference `./algo/`.
+
+## Website/Frontend Implementation 
 
 Reference `./website/`.
 
