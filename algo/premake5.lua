@@ -84,6 +84,7 @@ project "algo"
 
 	includedirs {
 		"include",
+		"../vendor/glm",
 	}
 
 	-- For windows MinGW toolchain, we need to link against stdc++exp (experimental C++ runtime library)
