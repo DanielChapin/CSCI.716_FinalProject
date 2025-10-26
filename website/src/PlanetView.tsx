@@ -1,4 +1,6 @@
 import { useAlgo } from './hooks/use-algo';
+import { createGeometry } from './lib/geometry';
+import { Canvas } from '@react-three/fiber'
 
 export type Props = {};
 
@@ -13,27 +15,17 @@ export default function PlanetView(_props: Props) {
     }
 
     const mesh = algo.gen_cube_mesh();
-    const vertices_arr = new Array(mesh.vertices.size()).fill(0).map((_, i) => mesh.vertices.get(i));
-    const indices_arr = new Array(mesh.indices.size()).fill(0).map((_, i) => mesh.indices.get(i));
+    const geometry = createGeometry(mesh);
 
     return (
         <>
-            <p>Vertices:</p>
-            <ul>
-                {vertices_arr.map((v, k) => (
-                    <li key={k}>
-                        {'<'}
-                        {v!.x}, {v!.y}, {v!.z}
-                        {'>'}
-                    </li>
-                ))}
-            </ul>
-            <p>Indices:</p>
-            <ul>
-                {indices_arr.map((i, k) => (
-                    <li key={k}>{i}</li>
-                ))}
-            </ul>
+            <Canvas camera={{ position: [0, 0, 5] }}>
+                <ambientLight />
+                <pointLight position={[10, 10, 10]} />
+                <mesh geometry={geometry}>
+                    <meshStandardMaterial color="orange" wireframe={false} />
+                </mesh>
+            </Canvas>
         </>
     );
 }

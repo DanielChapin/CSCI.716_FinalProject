@@ -1,0 +1,31 @@
+import * as THREE from 'three'
+import type { mesh } from "@/transient/algo/algo";
+
+type GeomOptions = {
+    genNormals?: boolean
+}
+
+export function createGeometry(mesh: mesh, options: Partial<GeomOptions> = {}): THREE.BufferGeometry {
+    const {
+        genNormals = true
+    } = options;
+
+    const geom = new THREE.BufferGeometry()
+
+    const vertices = new Float32Array(mesh.vertices.size() * 3);
+    for (let i = 0; i < mesh.vertices.size(); i++) {
+        const idx = i * 3;
+        const vtx = mesh.vertices.get(i)!;
+        vertices[idx + 0] = vtx.x;
+        vertices[idx + 1] = vtx.y;
+        vertices[idx + 2] = vtx.z;
+    }
+    geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+
+    const idxs = new Uint16Array(mesh.indices.size()).map((_, i) => mesh.indices.get(i)!);
+    geom.setIndex(new THREE.BufferAttribute(idxs, 1));
+
+    if (genNormals) geom.computeVertexNormals()
+
+    return geom
+}
