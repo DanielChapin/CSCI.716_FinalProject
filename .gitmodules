@@ -1,6 +1,6 @@
 [submodule "vendor/emsdk"]
-	path = vendor/emsdk
+	path = algo/vendor/emsdk
 	url = https://github.com/emscripten-core/emsdk.git
 [submodule "vendor/glm"]
-	path = vendor/glm
+	path = algo/vendor/glm
 	url = https://github.com/g-truc/glm.git

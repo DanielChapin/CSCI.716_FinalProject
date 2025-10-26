@@ -49,11 +49,11 @@ workspace "CSCI-716_Project"
 		targetextension ".html" 
 
 		includedirs {
-			"../vendor/emsdk/upstream/emscripten/system/include",
+			"vendor/emsdk/upstream/emscripten/system/include",
 		}
 		
 		libdirs {
-			"../vendor/emsdk/upstream/emscripten/system/lib",
+			"vendor/emsdk/upstream/emscripten/system/lib",
 		}
 
 		links {
@@ -84,7 +84,9 @@ project "algo"
 
 	includedirs {
 		"include",
-		"../vendor/glm",
+
+		-- Vendor
+		"vendor/glm",
 	}
 
 	-- For windows MinGW toolchain, we need to link against stdc++exp (experimental C++ runtime library)
