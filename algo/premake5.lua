@@ -101,10 +101,19 @@ project "algo"
 
 		linkoptions {
 			"--shell-file html_template.html",
-			"-s EXPORT_NAME='create_%{prj.name}'",
+			"--emit-tsd %{prj.name}.d.ts",
 			"-s MODULARIZE=1",
-			"--emit-tsd %{prj.name}.d.ts"
+			"-s EXPORT_NAME='create_%{prj.name}'",
+			"-s EXPORT_ES6=1",
 		}
+
+		postbuildcommands {
+			'{MKDIR} "../website/src/transient/algo/"',
+			'{MKDIR} "../website/public/transient/"',
+            '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.js" "../website/src/transient/algo/"',
+            '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.d.ts" "../website/src/transient/algo/"',
+            '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.wasm" "../website/public/transient/"',
+        }
 
 	filter {}
 
