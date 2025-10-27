@@ -2,6 +2,7 @@ import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei';
+import PlanetMenuBar from './PlanetMenubar';
 
 export type Props = {};
 
@@ -21,8 +22,9 @@ export default function PlanetView(_props: Props) {
     console.log(geometry);
 
     return (
-        <>
-            <Canvas camera={{ position: [0, 0, 5] }}>
+        <div className='h-full w-full relative'>
+            <div className='absolute left-1 top-1 z-10'><PlanetMenuBar /></div>
+            <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <mesh geometry={geometry}>
@@ -30,6 +32,6 @@ export default function PlanetView(_props: Props) {
                 </mesh>
                 <OrbitControls />
             </Canvas>
-        </>
+        </div>
     );
 }

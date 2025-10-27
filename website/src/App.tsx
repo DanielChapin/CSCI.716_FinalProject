@@ -8,7 +8,9 @@ function App() {
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel><UserConfigView /></ResizablePanel>
                 <ResizableHandle withHandle />
-                <ResizablePanel><PlanetView /></ResizablePanel>
+                <ResizablePanel>
+                    <PlanetView />
+                </ResizablePanel>
             </ResizablePanelGroup>
         </div>
     );
