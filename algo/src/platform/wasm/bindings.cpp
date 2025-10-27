@@ -23,6 +23,8 @@ EMSCRIPTEN_BINDINGS(algo)
     emscripten::function("genCircleMesh", &genCircleMesh);
 
     emscripten::function("simplex3D", &simplex3D);
+    emscripten::function("noise3D", &noise3D);
+    
     emscripten::function("randv4", static_cast<float (*)(vec4, uint32_t)>(&rand));
     emscripten::function("randv3", static_cast<float (*)(vec3, uint32_t)>(&rand));
     emscripten::function("randv2", static_cast<float (*)(vec2, uint32_t)>(&rand));

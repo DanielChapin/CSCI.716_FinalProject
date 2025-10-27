@@ -12,7 +12,7 @@ namespace algo
     using glm::vec4;
     using std::array;
 
-    // We have a template of present gradients that we will
+    // We have a template of preset gradients that we will
     // associate at random with every point on our simplex lattice.
     // This is generally better than using random values as the output
     // will appear more organic and natural
@@ -108,6 +108,26 @@ namespace algo
         contribution.z = attenuate(dir2) * glm::dot(grad2, dir2);
         contribution.w = attenuate(dir3) * glm::dot(grad3, dir3);
 
+        // The following is based on the selected attenuation function and the gradients
+        // Convert the value to the range [0, 1)
         return (glm::dot(contribution, vec4(32.f)) + 1.f) / 2.f;
+    }
+
+    float noise3D(vec3 pos, uint32_t seed, float scale = 1.0f, float lacunarity = 2.0f, float persistence = 0.5f, uint8_t octaves = 8)
+    {
+        float result = 0.f;
+        float result_max = 0.f;
+        float effective_scale = scale;
+        float effective_mag = 1.f;
+
+        for (uint8_t octave = 0; octave < octaves; ++octave)
+        {
+            result += simplex3D(pos * effective_scale, seed) * effective_mag;
+            result_max += effective_mag;
+            effective_scale *= lacunarity;
+            effective_mag *= persistence;
+        }
+
+        return result / result_max;
     }
 }
