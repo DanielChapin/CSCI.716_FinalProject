@@ -4,20 +4,18 @@
 //
 
 #include <shapes.hpp>
-#include "marching_cubes.hpp"
+#include <marching_cubes.hpp>
+#include <noise.hpp>
+
 #include <numeric>
+
 #include <glm/geometric.hpp>
 
 namespace algo
 {
     using glm::vec3;
 
-    vec3 gen_vec3()
-    {
-        return { 1, 0, 1 };
-    }
-    
-    pair<vector<vec3>, vector<uint32_t>> gen_cube_mesh()
+    mesh_t gen_cube_mesh()
     {
         return
         {
@@ -63,17 +61,18 @@ namespace algo
         };
     }
 
-    pair<vector<vec3>, vector<uint32_t>> genCircleMesh()
+    mesh_t gen_circle_mesh(const function<float(vec3)>& jitter_generator)
     {
+        // TODO: Probably could/should parameterize on these?
         float radius = 1;
         vec3 origin(-radius);
         vec3 dims(2 * radius);
         vec3 interval(radius / 21);
         vec3 center = origin + dims / vec3(2);
 
-        auto getDensity = [&center, &radius](vec3 pos) -> float
+        auto getDensity = [&center, &radius, &jitter_generator](vec3 pos)
         {
-            return glm::distance(pos, center) - radius;
+            return glm::distance(pos, center) - (radius + jitter_generator(pos));
         };
 
         vector<vec3> verts = marchingCubes(origin, dims, interval, getDensity, 0, blendVec3Linear);
@@ -81,5 +80,15 @@ namespace algo
         std::iota(idxs.begin(), idxs.end(), 0);
 
         return { verts, idxs };
+    }
+
+    mesh_t gen_circle_mesh()
+    {
+        return gen_circle_mesh([](vec3){ return 0.f; });
+    }
+
+    mesh_t gen_terrain_mesh()
+    {
+        return gen_circle_mesh([](vec3 pos){ return noise3D(pos, 0) * -0.25f; });
     }
 }

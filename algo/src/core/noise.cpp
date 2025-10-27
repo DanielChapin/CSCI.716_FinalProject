@@ -113,7 +113,7 @@ namespace algo
         return (glm::dot(contribution, vec4(32.f)) + 1.f) / 2.f;
     }
 
-    float noise3D(vec3 pos, uint32_t seed, float scale = 1.0f, float lacunarity = 2.0f, float persistence = 0.5f, uint8_t octaves = 8)
+    float noise3D(vec3 pos, uint32_t seed, float scale, float lacunarity, float persistence, uint8_t octaves)
     {
         float result = 0.f;
         float result_max = 0.f;

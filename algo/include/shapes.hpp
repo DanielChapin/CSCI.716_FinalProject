@@ -12,9 +12,12 @@ namespace algo
 
     using std::pair;
     using std::vector;
+    using std::function;
 
-    extern vec3 gen_vec3();
+    using mesh_t = pair<vector<vec3>, vector<uint32_t>>;
 
-    extern pair<vector<vec3>, vector<uint32_t>> gen_cube_mesh();
-    extern pair<vector<vec3>, vector<uint32_t>> genCircleMesh();
+    extern mesh_t gen_cube_mesh();
+    extern mesh_t gen_circle_mesh();
+    extern mesh_t gen_circle_mesh(const function<float(vec3)>& jitter_generator);
+    extern mesh_t gen_terrain_mesh();
 }
