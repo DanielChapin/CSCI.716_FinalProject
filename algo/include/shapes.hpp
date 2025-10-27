@@ -12,9 +12,9 @@ namespace algo
 
     using std::pair;
     using std::vector;
-    using std::uint8_t;
 
     extern vec3 gen_vec3();
 
-    extern pair<vector<vec3>, vector<uint8_t>> gen_cube_mesh();
+    extern pair<vector<vec3>, vector<uint32_t>> gen_cube_mesh();
+    extern pair<vector<vec3>, vector<uint32_t>> genCircleMesh();
 }

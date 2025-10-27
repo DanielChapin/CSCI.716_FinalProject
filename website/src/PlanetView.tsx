@@ -1,6 +1,7 @@
 import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import { Canvas } from '@react-three/fiber'
+import { OrbitControls } from '@react-three/drei';
 
 export type Props = {};
 
@@ -14,8 +15,10 @@ export default function PlanetView(_props: Props) {
         return <div>Loading Binary Modules...</div>;
     }
 
-    const mesh = algo.gen_cube_mesh();
+    const mesh = algo.genCircleMesh();
+    console.log(mesh);
     const geometry = createGeometry(mesh);
+    console.log(geometry);
 
     return (
         <>
@@ -23,8 +26,9 @@ export default function PlanetView(_props: Props) {
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} />
                 <mesh geometry={geometry}>
-                    <meshStandardMaterial color="orange" wireframe={false} />
+                    <meshPhongMaterial color="white" wireframe={true} />
                 </mesh>
+                <OrbitControls />
             </Canvas>
         </>
     );

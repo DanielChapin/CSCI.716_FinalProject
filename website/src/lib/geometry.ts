@@ -25,6 +25,7 @@ export function createGeometry(mesh: mesh, options: Partial<GeomOptions> = {}): 
     const idxs = new Uint16Array(mesh.indices.size()).map((_, i) => mesh.indices.get(i)!);
     geom.setIndex(new THREE.BufferAttribute(idxs, 1));
 
+    console.log(genNormals);
     if (genNormals) geom.computeVertexNormals()
 
     return geom
