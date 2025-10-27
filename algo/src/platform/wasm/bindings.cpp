@@ -5,6 +5,8 @@
 //
 
 #include <shapes.hpp>
+#include <noise.hpp>
+#include <spatial_random.hpp>
 
 #include <emscripten/bind.h>
 
@@ -20,10 +22,25 @@ EMSCRIPTEN_BINDINGS(algo)
     emscripten::function("gen_cube_mesh", &gen_cube_mesh);
     emscripten::function("genCircleMesh", &genCircleMesh);
 
+    emscripten::function("simplex3D", &simplex3D);
+    emscripten::function("randv4", static_cast<float (*)(vec4, uint32_t)>(&rand));
+    emscripten::function("randv3", static_cast<float (*)(vec3, uint32_t)>(&rand));
+    emscripten::function("randv2", static_cast<float (*)(vec2, uint32_t)>(&rand));
+    
+    value_object<vec4>("vec4")
+        .field("x", &vec4::x)
+        .field("y", &vec4::y)
+        .field("z", &vec4::z)
+        .field("w", &vec4::w);
+    
     value_object<vec3>("vec3")
         .field("x", &vec3::x)
         .field("y", &vec3::y)
         .field("z", &vec3::z);
+
+    value_object<vec2>("vec2")
+        .field("x", &vec2::x)
+        .field("y", &vec2::y);
 
     value_object<pair<vector<vec3>, vector<uint32_t>>>("mesh")
         .field("vertices", &pair<vector<vec3>, vector<uint32_t>>::first)

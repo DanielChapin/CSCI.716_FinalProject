@@ -1,5 +1,8 @@
 
+#include <glm/glm.hpp>
+#include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
+#include <glm/vec4.hpp>
 
 #include <vector>
 #include <array>
@@ -14,6 +17,7 @@
 #include <functional>
 #include <algorithm>
 #include <utility>
+#include <span>
 
 #include <cstdint>
 #include <string>
