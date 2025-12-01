@@ -65,9 +65,10 @@ namespace algo
     {
         // TODO: Probably could/should parameterize on these?
         float radius = 1;
-        vec3 origin(-radius);
-        vec3 dims(2 * radius);
-        vec3 interval(radius / 21);
+        float scale = 3.f;
+        vec3 origin((scale / 2) * -radius);
+        vec3 dims(scale * radius);
+        vec3 interval(radius / 60);
         vec3 center = origin + dims / vec3(2);
 
         auto getDensity = [&center, &radius, &jitter_generator](vec3 pos)
@@ -89,6 +90,6 @@ namespace algo
 
     mesh_t gen_terrain_mesh()
     {
-        return gen_circle_mesh([](vec3 pos){ return noise3D(pos, 0) * -0.25f; });
+        return gen_circle_mesh([](vec3 pos){ return glm::clamp(noise3D(pos, 0, 4.0f, 2.0f, 0.5f, 3), 0.45f, 1.0f) * .15f; });
     }
 }

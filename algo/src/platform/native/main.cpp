@@ -13,7 +13,7 @@ using glm::vec3;
 
 int main()
 {
-    std::println("{}", glm::to_string(algo::gen_vec3()));
+    std::println("The native executor has not yet been implemented");
 }
 
 #endif

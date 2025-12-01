@@ -1,16 +1,15 @@
-import * as THREE from 'three'
-import type { mesh } from "@/transient/algo/algo";
+import * as THREE from 'three';
+
+import type { Mesh } from '@/transient/algo/algo';
 
 type GeomOptions = {
-    genNormals?: boolean
-}
+    genNormals?: boolean;
+};
 
-export function createGeometry(mesh: mesh, options: Partial<GeomOptions> = {}): THREE.BufferGeometry {
-    const {
-        genNormals = true
-    } = options;
+export function createGeometry(mesh: Mesh, options: Partial<GeomOptions> = {}): THREE.BufferGeometry {
+    const { genNormals = true } = options;
 
-    const geom = new THREE.BufferGeometry()
+    const geom = new THREE.BufferGeometry();
 
     const vertices = new Float32Array(mesh.vertices.size() * 3);
     for (let i = 0; i < mesh.vertices.size(); i++) {
@@ -20,13 +19,12 @@ export function createGeometry(mesh: mesh, options: Partial<GeomOptions> = {}): 
         vertices[idx + 1] = vtx.y;
         vertices[idx + 2] = vtx.z;
     }
-    geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3))
+    geom.setAttribute('position', new THREE.BufferAttribute(vertices, 3));
 
-    const idxs = new Uint16Array(mesh.indices.size()).map((_, i) => mesh.indices.get(i)!);
+    const idxs = new Uint32Array(mesh.indices.size()).map((_, i) => mesh.indices.get(i)!);
     geom.setIndex(new THREE.BufferAttribute(idxs, 1));
 
-    console.log(genNormals);
-    if (genNormals) geom.computeVertexNormals()
+    if (genNormals) geom.computeVertexNormals();
 
-    return geom
+    return geom;
 }

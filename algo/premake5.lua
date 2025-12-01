@@ -105,6 +105,7 @@ project "algo"
 			"-s MODULARIZE=1",
 			"-s EXPORT_NAME='create_%{prj.name}'",
 			"-s EXPORT_ES6=1",
+			"-s ALLOW_MEMORY_GROWTH"
 		}
 
 		postbuildcommands {

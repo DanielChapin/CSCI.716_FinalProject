@@ -1,26 +1,42 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
+import { useEffect, useState } from 'react';
+import { type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes, PointLight } from 'three';
 
 import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import PlanetMenuBar from './PlanetMenubar';
 
-export type Props = {};
-
 /**
  * @description A 3D viewer for a generated planet mesh.
  */
-export default function PlanetView(_props: Props) {
+export default function PlanetView() {
     const algo = useAlgo();
+    const [geometry, setGeometry] = useState<null | BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap>>(null);
+    const [generating, setGenerating] = useState(true);
+
+    useEffect(() => {
+        if (!algo) {
+            return;
+        }
+        setGenerating(true);
+        const mesh = algo.gen_terrain_mesh();
+        const geometry = createGeometry(mesh);
+        setGeometry(geometry);
+        setGenerating(false);
+    }, [algo]);
 
     if (!algo) {
         return <div>Loading Binary Modules...</div>;
     }
 
-    const mesh = algo.gen_terrain_mesh();
-    console.log(mesh);
-    const geometry = createGeometry(mesh);
-    console.log(geometry);
+    if (generating) {
+        return <div>Generating Mesh...</div>;
+    }
+
+    if (!geometry) {
+        return <div>Failed to generate the mesh!</div>;
+    }
 
     return (
         <div className='h-full w-full relative'>
@@ -29,9 +45,9 @@ export default function PlanetView(_props: Props) {
             </div>
             <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
                 <ambientLight />
-                <pointLight position={[10, 10, 10]} />
+                <pointLight position={[10, 10, 10]} intensity={200} />
                 <mesh geometry={geometry}>
-                    <meshPhongMaterial color='white' wireframe={true} />
+                    <meshPhongMaterial color='white' side={2} />
                 </mesh>
                 <OrbitControls />
             </Canvas>

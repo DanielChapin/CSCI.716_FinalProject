@@ -1,4 +1,5 @@
 import js from '@eslint/js';
+import reactThree from '@react-three/eslint-plugin';
 import { defineConfig, globalIgnores } from 'eslint/config';
 import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
 import react from 'eslint-plugin-react';
@@ -18,6 +19,7 @@ export default defineConfig([
             reactHooks.configs['recommended-latest'],
             reactRefresh.configs.vite,
             react.configs.flat.recommended,
+            reactThree.configs,
         ],
         languageOptions: {
             ecmaVersion: 2020,
