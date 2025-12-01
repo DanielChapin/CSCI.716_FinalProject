@@ -61,35 +61,39 @@ namespace algo
         };
     }
 
-    mesh_t gen_circle_mesh(const function<float(vec3)>& jitter_generator)
+    mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step)
     {
-        // TODO: Probably could/should parameterize on these?
-        float radius = 1;
-        float scale = 3.f;
-        vec3 origin((scale / 2) * -radius);
         vec3 dims(scale * radius);
-        vec3 interval(radius / 60);
-        vec3 center = origin + dims / vec3(2);
+        vec3 origin = center - dims / vec3{2};
+        vec3 interval(radius * step);
 
-        auto getDensity = [&center, &radius, &jitter_generator](vec3 pos)
+        auto getDensity = [&center, &radius](vec3 pos)
         {
-            return glm::distance(pos, center) - (radius + jitter_generator(pos));
+            return glm::distance(pos, center) - radius;
         };
 
-        vector<vec3> verts = marchingCubes(origin, dims, interval, getDensity, 0, blendVec3Linear);
+        auto verts = marchingCubes(origin, dims, interval, getDensity, 0, blendVec3Linear);
         vector<uint32_t> idxs(verts.size());
         std::iota(idxs.begin(), idxs.end(), 0);
 
         return { verts, idxs };
     }
 
-    mesh_t gen_circle_mesh()
-    {
-        return gen_circle_mesh([](vec3){ return 0.f; });
-    }
-
     mesh_t gen_terrain_mesh()
     {
-        return gen_circle_mesh([](vec3 pos){ return glm::clamp(noise3D(pos, 0, 4.0f, 2.0f, 0.5f, 3), 0.45f, 1.0f) * .15f; });
+        // TODO: Parameterize these
+        const float scale = 3;
+        const vec3 center = vec3{0.0};
+        mesh_t mesh = gen_circle_mesh(1, scale, center, 0.01);
+
+        for (vec3& v : mesh.verts)
+        {
+            float jitter = glm::clamp(noise3D(v, 0, 4, 1.5f, 0.5f, 8), 0.45f, 1.0f) * .25f;
+            // TODO: Our marching cubes should generate smooth normals for irregular shapes?
+            vec3 normal = glm::normalize(v - center);
+            v += jitter * normal;
+        }
+
+        return mesh;
     }
 }

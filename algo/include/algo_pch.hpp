@@ -12,12 +12,13 @@
 #include <unordered_set>
 #include <iterator>
 #include <queue>
+#include <ranges>
+#include <span>
 
 #include <memory>
 #include <functional>
 #include <algorithm>
 #include <utility>
-#include <span>
 
 #include <cstdint>
 #include <string>

@@ -21,8 +21,10 @@ workspace "CSCI-716_Project"
 
 	filter "configurations:Release"
 		defines "CONFIG_RELEASE"
-		optimize "on"
+		optimize "full"
 		symbols "off"
+		linktimeoptimization "on"
+		flags "MultiProcessorCompile"
 
 	filter "system:windows"
 		systemversion "latest"

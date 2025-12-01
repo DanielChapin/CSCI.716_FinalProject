@@ -7,6 +7,7 @@
 #include <shapes.hpp>
 #include <noise.hpp>
 #include <spatial_random.hpp>
+#include <geometry.hpp>
 
 #include <emscripten/bind.h>
 
@@ -19,7 +20,7 @@ EMSCRIPTEN_BINDINGS(algo)
     using namespace algo;
 
     emscripten::function("gen_cube_mesh", &gen_cube_mesh);
-    emscripten::function("gen_circle_mesh", static_cast<mesh_t(*)(void)>(&gen_circle_mesh));
+    emscripten::function("gen_circle_mesh", static_cast<mesh_t(*)(float, float, vec3, float)>(&gen_circle_mesh));
     emscripten::function("gen_terrain_mesh", &gen_terrain_mesh);
 
     emscripten::function("simplex3D", &simplex3D);
@@ -45,8 +46,8 @@ EMSCRIPTEN_BINDINGS(algo)
         .field("y", &vec2::y);
 
     value_object<mesh_t>("Mesh")
-        .field("vertices", &mesh_t::first)
-        .field("indices", &mesh_t::second);
+        .field("vertices", &mesh_t::verts)
+        .field("indices", &mesh_t::idxs);
 
     register_vector<vec3>("vec3_vector");
     register_vector<std::uint8_t>("uint8_vector");
