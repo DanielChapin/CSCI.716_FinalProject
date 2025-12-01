@@ -88,7 +88,9 @@ namespace algo
 
         for (vec3& v : mesh.verts)
         {
-            float jitter = glm::clamp(noise3D(v, 0, 4, 1.5f, 0.5f, 8), 0.45f, 1.0f) * .25f;
+            float noise = glm::clamp(noise3D(v, 0, 4), 0.35f, 1.0f);
+            float smooth = glm::smoothstep(0.f, 1.f, noise);
+            float jitter = smooth * smooth * .05f;
             // TODO: Our marching cubes should generate smooth normals for irregular shapes?
             vec3 normal = glm::normalize(v - center);
             v += jitter * normal;
