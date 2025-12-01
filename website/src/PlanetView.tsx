@@ -46,8 +46,8 @@ export default function PlanetView() {
             <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
                 <ambientLight />
                 <pointLight position={[10, 10, 10]} intensity={200} />
-                <mesh geometry={geometry}>
-                    <meshPhongMaterial color='white' side={2} />
+                <mesh geometry={geometry} >
+                    <meshPhongMaterial vertexColors side={2} flatShading={false}  />
                 </mesh>
                 <OrbitControls />
             </Canvas>
