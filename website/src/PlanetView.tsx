@@ -1,13 +1,14 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
-import { type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes, PointLight } from 'three';
+import { type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes } from 'three';
 import * as THREE from 'three';
-import { OBJExporter } from 'three/examples/jsm/exporters/OBJExporter.js';
+import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
 import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import PlanetMenuBar from './PlanetMenubar';
+import { toast } from 'sonner';
 
 /**
  * @description A 3D viewer for a generated planet mesh.
@@ -18,8 +19,10 @@ export default function PlanetView() {
     const [generating, setGenerating] = useState(true);
     const [wireframe, setWireframe] = useState(false);
     const [autoRotate, setAutoRotate] = useState(true);
+    const [downloading, setDownloading] = useState(false);
 
     const meshRef = useRef<THREE.Mesh | undefined>(undefined);
+    const downloadRef = useRef<HTMLAnchorElement | null>(null);
 
     useEffect(() => {
         if (!algo) {
@@ -33,21 +36,63 @@ export default function PlanetView() {
     }, [algo]);
 
     if (!algo) {
-        return <div>Loading Binary Modules...</div>;
+        return <div className='h-full w-full flex items-center justify-center'><span className="text-xl">Loading Binary Modules...</span></div>;
     }
 
     if (generating) {
-        return <div>Generating Mesh...</div>;
+        return <div className='h-full w-full flex items-center justify-center'><span className="text-xl">Generating Mesh...</span></div>;
     }
 
     if (!geometry) {
-        return <div>Failed to generate the mesh!</div>;
+        toast.error("Failed to generate mesh.", { dismissible: true, duration: 1000 });
+        return <div className='h-full w-full flex items-center justify-center'><span className="text-xl">Error</span></div>;
+    }
+
+    function download() {
+        if (!meshRef.current) {
+            toast.error("No valid mesh!");
+            return;
+        }
+
+        setDownloading(true);
+        toast.info("Generating file.");
+
+        const binary = true;
+
+        const exporter = new GLTFExporter();
+        exporter
+            .parseAsync(meshRef.current, { binary })
+            .then(binOrJson => {
+                if (binOrJson instanceof ArrayBuffer) {
+                    return new Blob([binOrJson], { type: 'model/gltf-binary' });
+                } else {
+                    const json = JSON.stringify(binOrJson, null, 1);
+                    return new Blob([json], { type: 'model/gltf+json' });
+                }
+            })
+            .then(blob => {
+                if (!downloadRef.current) {
+                    toast.error("No valid download context.");
+                    return;
+                }
+
+                const a = downloadRef.current;
+                const url = URL.createObjectURL(blob);
+                a.href = url;
+                a.download = binary ? "planet.glb" : "planet.gltf";
+                a.click();
+                URL.revokeObjectURL(url);
+            })
+            .finally(() => {
+                setDownloading(false);
+            });
     }
 
     return (
         <div className='h-full w-full relative'>
+            <a className='hidden' ref={downloadRef}></a>
             <div className='absolute left-1 top-1 z-10'>
-                <PlanetMenuBar onWireframeChange={setWireframe} onAutoRotateChange={setAutoRotate} />
+                <PlanetMenuBar downloadEnabled={!downloading} onWireframeChange={setWireframe} onAutoRotateChange={setAutoRotate} onDownload={download} />
             </div>
             <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
                 <ambientLight />

@@ -2,6 +2,7 @@ import { Menubar, MenubarCheckboxItem, MenubarContent, MenubarItem, MenubarMenu,
 import { useEffect, useState } from "react";
 
 export type Props = {
+    downloadEnabled?: boolean,
     onWireframeChange?: (wireframe: boolean) => void;
     onColorsChange?: (colors: boolean) => void;
     onAutoRotateChange?: (autoRotate: boolean) => void;
@@ -10,6 +11,7 @@ export type Props = {
 
 export default function PlanetMenuBar(props: Props) {
     const {
+        downloadEnabled = true,
         onWireframeChange = undefined,
         onColorsChange = undefined,
         onAutoRotateChange = undefined,
@@ -28,7 +30,7 @@ export default function PlanetMenuBar(props: Props) {
         <MenubarMenu>
             <MenubarTrigger>File</MenubarTrigger>
             <MenubarContent>
-                <MenubarItem onClick={_e => onDownload?.()}>Download</MenubarItem>
+                <MenubarItem disabled={!downloadEnabled} onClick={_e => onDownload?.()}>Download</MenubarItem>
             </MenubarContent>
         </MenubarMenu>
         <MenubarMenu>
