@@ -1,13 +1,16 @@
 import { randInt } from 'three/src/math/MathUtils.js';
+import * as Edge from '@/transient/algo/algo';
 
 export type FeaturesConfig = {
+    seed: string;
     elevation: NoiseConfig;
     temperature: NoiseConfig;
     humidity: NoiseConfig;
 };
 
+export type FeaturesConfigVariants = keyof Omit<FeaturesConfig, "seed">;
+
 export type NoiseConfig = {
-    seed: string;
     scale: number;
     octaves: number;
     persistence: number;
@@ -38,22 +41,20 @@ function randSeed(): string {
 
 export const defaultUserConfig: UserConfig = {
     features: {
+        seed: randSeed(),
         elevation: {
-            seed: randSeed(),
             scale: 1,
             octaves: 8,
             persistence: 0.5,
             lacunarity: 2.0,
         },
         temperature: {
-            seed: randSeed(),
             scale: 1,
             octaves: 8,
             persistence: 0.5,
             lacunarity: 2.0,
         },
         humidity: {
-            seed: randSeed(),
             scale: 1,
             octaves: 8,
             persistence: 0.5,
@@ -69,3 +70,16 @@ export const defaultUserConfig: UserConfig = {
         interval: 0.01,
     },
 };
+
+export function toEdgeRepr(config: UserConfig): Edge.UserConfig {
+    const {
+        features,
+        // marchingCubes: { blendMode, interval },
+        planet,
+    } = config;
+
+    return {
+        features,
+        planet,
+    };
+}

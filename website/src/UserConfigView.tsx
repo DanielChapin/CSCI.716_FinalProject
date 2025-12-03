@@ -1,4 +1,4 @@
-import { defaultUserConfig, type FeaturesConfig, type MarchingCubesBlendMode, type NoiseConfig, type UserConfig } from "@/lib/user-config";
+import { defaultUserConfig, type FeaturesConfigVariants, type MarchingCubesBlendMode, type NoiseConfig, type UserConfig } from "@/lib/user-config";
 import { Button } from "./components/ui/button";
 import { ScrollArea, ScrollBar } from "./components/ui/scroll-area";
 import { Separator } from "./components/ui/separator";
@@ -26,7 +26,7 @@ export default function UserConfigView(props: Props) {
     } = props;
 
     const [config, setConfig] = useState<UserConfig>(suppliedConfig ?? { ...defaultUserConfig })
-    const [currentFeature, setCurrentFeature] = useState<keyof FeaturesConfig>("elevation");
+    const [currentFeature, setCurrentFeature] = useState<FeaturesConfigVariants>("elevation");
 
     function updateConfig(update: DeepPartial<UserConfig>) {
         setConfig(mergeOptions(config, update));
@@ -44,8 +44,13 @@ export default function UserConfigView(props: Props) {
         <ScrollArea className="flex flex-col p-2 w-full h-full">
             <p className="text-xl"><b>RNG Parameters</b></p>
 
+            <Label htmlFor="seed">Seed</Label>
+            <Input className="max-w-sm" id="seed" type="text" placeholder="seed"
+                value={config.features.seed}
+                onChange={event => updateConfig({ features: { seed: event.target.value } })} />
+
             <Label htmlFor="noise-feature">Noise Feature</Label>
-            <Select onValueChange={feature => setCurrentFeature(feature as keyof FeaturesConfig)} value={currentFeature}>
+            <Select onValueChange={feature => setCurrentFeature(feature as FeaturesConfigVariants)} value={currentFeature}>
                 <SelectTrigger className="w-[180px]">
                     <SelectValue placeholder="Select a noise feature" />
                 </SelectTrigger>
@@ -58,11 +63,6 @@ export default function UserConfigView(props: Props) {
                     </SelectGroup>
                 </SelectContent>
             </Select>
-
-            <Label htmlFor="seed">Seed</Label>
-            <Input className="max-w-sm" id="seed" type="text" placeholder="seed"
-                value={config.features[currentFeature].seed}
-                onChange={event => updateCurrentFeature({ seed: event.target.value })} />
 
             <Label htmlFor="scale">Scale</Label>
             <Slider className="max-w-sm" id="scale" min={0.01} max={10} step={0.01}
@@ -125,7 +125,6 @@ export default function UserConfigView(props: Props) {
                 value={[config.marchingCubes.interval]}
                 onValueChange={values => updateConfig({ marchingCubes: { interval: values[0] } })} />
 
-            {/* TODO Why is scrollbar not showing up? */}
             <ScrollBar orientation="vertical" hidden={false} />
         </ScrollArea>
         <div className="bottom-0 h-min w-full">

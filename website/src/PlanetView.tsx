@@ -5,45 +5,22 @@ import { type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttr
 import * as THREE from 'three';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
-import { type UserConfig } from '@/transient/algo/algo';
-
 import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import PlanetMenuBar from './PlanetMenubar';
 import { toast } from 'sonner';
+import { toEdgeRepr, type UserConfig } from './lib/user-config';
 
-const config: UserConfig = {
-    features: {
-        elevation: {
-            scale: 0.25,
-            lacunarity: 2.0,
-            persistence: 0.5,
-            octaves: 8,
-        },
-        humidity: {
-            scale: 1,
-            lacunarity: 2.0,
-            persistence: 0.5,
-            octaves: 2,
-        },
-        temperature: {
-            scale: 1,
-            lacunarity: 2.0,
-            persistence: 0.5,
-            octaves: 2,
-        },
-        seed: 'hello',
-    },
-    planet: {
-        radius: 10,
-        elevationScale: 20,
-    },
+export type Props = {
+    config: UserConfig;
 };
 
 /**
  * @description A 3D viewer for a generated planet mesh.
  */
-export default function PlanetView() {
+export default function PlanetView(props: Props) {
+    const { config } = props;
+
     const algo = useAlgo();
     const [geometry, setGeometry] = useState<null | BufferGeometry<NormalBufferAttributes, BufferGeometryEventMap>>(null);
     const [generating, setGenerating] = useState(true);
@@ -59,7 +36,7 @@ export default function PlanetView() {
             return;
         }
         setGenerating(true);
-        const mesh = algo.gen_terrain_mesh(config);
+        const mesh = algo.gen_terrain_mesh(toEdgeRepr(config));
         const geometry = createGeometry(mesh);
         setGeometry(geometry);
         setGenerating(false);
