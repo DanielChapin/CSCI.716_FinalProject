@@ -45,7 +45,6 @@ EMSCRIPTEN_BINDINGS(algo)
 
     value_object<mesh_t>("Mesh")
         .field("vertices", &mesh_t::verts)
-        .field("colors", &mesh_t::colors)
         .field("indices", &mesh_t::idxs);
 
     value_object<NoiseConfig>("NoiseConfig")

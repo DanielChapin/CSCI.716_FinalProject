@@ -1,0 +1,19 @@
+
+float elevation = noise3D(v2f_pos, u_seed, u_elevScale, u_elevLac, u_elevPersistence, u_elevOctaves);
+elevation = clamp(elevation, 0.5, 1.0);
+elevation = smoothstep(0., 1., elevation);
+
+float temperature = noise3D(v2f_pos, u_seed + 1, u_tempScale, u_tempLac, u_tempPersistence, u_tempOctaves);
+float humidity = noise3D(v2f_pos, u_seed + 2, u_humiScale, u_humiLac, u_humiPersistence, u_humiOctaves);
+
+int biome_idx = 0;
+for (int i = 0; i < u_BiomeCount; ++i)
+{
+    if (contained(u_Biomes[i], vec3(elevation, temperature, humidity)))
+    {
+        biome_idx = i;
+        break;
+    }
+}
+
+gl_FragColor *= u_Biomes[biome_idx].color;

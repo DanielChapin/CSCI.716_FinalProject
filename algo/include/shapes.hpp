@@ -19,7 +19,7 @@ namespace algo
     struct NoiseConfig
     {
         float scale;
-        uint32_t octaves;
+        uint8_t octaves;
         float persistence;
         float lacunarity;
     };
@@ -45,5 +45,5 @@ namespace algo
     };
 
     extern mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step);
-    extern mesh_t gen_terrain_mesh(UserConfig);
+    extern mesh_t gen_terrain_mesh(const UserConfig& config);
 }
