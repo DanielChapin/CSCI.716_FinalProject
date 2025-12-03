@@ -17,6 +17,30 @@ namespace algo
         return a + u * (b - a);
     }
 
+    vec3 blendVec3Cubic(vec3 a, float aWeight, vec3 b, float bWeight)
+    {
+        if (std::abs(aWeight) < 0.00001)
+            return a;
+        if (std::abs(bWeight) < 0.00001)
+            return b;
+        if (std::abs(aWeight - bWeight) < 0.00001)
+            return a;
+
+        float u = -aWeight / (bWeight - aWeight);
+        u = u * u * u;
+        return a + u * (b - a);
+    }
+
+    vec3 blendVec3Nearest(vec3 a, float aWeight, vec3 b, float bWeight)
+    {
+        return aWeight > bWeight ? b : a;
+    }
+
+    vec3 blendVec3Middle(vec3 a, float aWeight, vec3 b, float bWeight)
+    {
+        return 0.5f * a + 0.5f * b;
+    }
+
     Vertex::Vertex(vec3 pos, vec3 norm, vec3 color)
         : pos(pos), norm(norm), color(color)
     {
