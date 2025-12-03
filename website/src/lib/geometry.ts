@@ -12,10 +12,6 @@ export function createGeometry(mesh: Mesh, options: Partial<GeomOptions> = {}): 
     const { genNormals = true } = options;
 
     const geom = new THREE.BufferGeometry();
-<<<<<<< HEAD
-
-=======
->>>>>>> 8c6ee03c76f3e0789b65dfb2b4c9eb740c86e895
     const vertices = new Float32Array(mesh.vertices.size() * 3);
     const colors = new Float32Array(mesh.vertices.size() * 3);
     for (let i = 0; i < mesh.vertices.size(); i++) {
