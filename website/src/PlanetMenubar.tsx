@@ -18,7 +18,7 @@ export default function PlanetMenuBar(props: Props) {
 
     const [wireframe, setWireframe] = useState(false);
     const [colors, setColors] = useState(true);
-    const [autoRotate, setAutoRotate] = useState(true);
+    const [autoRotate, setAutoRotate] = useState(false);
 
     useEffect(() => onWireframeChange?.(wireframe), [wireframe, onWireframeChange]);
     useEffect(() => onColorsChange?.(colors), [colors, onColorsChange]);
