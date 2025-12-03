@@ -19,10 +19,8 @@ EMSCRIPTEN_BINDINGS(algo)
 
     using namespace algo;
 
-    emscripten::function("gen_cube_mesh", &gen_cube_mesh);
-    emscripten::function("gen_circle_mesh", static_cast<mesh_t(*)(float, float, vec3, float)>(&gen_circle_mesh));
+    emscripten::function("gen_circle_mesh", &gen_circle_mesh);
     emscripten::function("gen_terrain_mesh", &gen_terrain_mesh);
-
     emscripten::function("simplex3D", &simplex3D);
     emscripten::function("noise3D", &noise3D);
     
@@ -47,8 +45,9 @@ EMSCRIPTEN_BINDINGS(algo)
 
     value_object<mesh_t>("Mesh")
         .field("vertices", &mesh_t::verts)
+        .field("colors", &mesh_t::colors)
         .field("indices", &mesh_t::idxs);
-
+        
     register_vector<vec3>("vec3_vector");
     register_vector<std::uint8_t>("uint8_vector");
     register_vector<std::uint16_t>("uint16_vector");

@@ -14,52 +14,7 @@
 namespace algo
 {
     using glm::vec3;
-
-    mesh_t gen_cube_mesh()
-    {
-        return
-        {
-            {
-                { -0.5f, -0.5f,  0.5f },
-                {  0.5f, -0.5f,  0.5f },
-                {  0.5f,  0.5f,  0.5f },
-                { -0.5f,  0.5f,  0.5f },
-    
-                {  0.5f, -0.5f,  0.5f },
-                {  0.5f, -0.5f, -0.5f },
-                {  0.5f,  0.5f, -0.5f },
-                {  0.5f,  0.5f,  0.5f },
-                
-                {  0.5f, -0.5f, -0.5f },
-                { -0.5f, -0.5f, -0.5f },
-                { -0.5f,  0.5f, -0.5f },
-                {  0.5f,  0.5f, -0.5f },
-    
-                { -0.5f, -0.5f, -0.5f },
-                { -0.5f, -0.5f,  0.5f },
-                { -0.5f,  0.5f,  0.5f },
-                { -0.5f,  0.5f, -0.5f },
-    
-                { -0.5f,  0.5f,  0.5f },
-                {  0.5f,  0.5f,  0.5f },
-                {  0.5f,  0.5f, -0.5f },
-                { -0.5f,  0.5f, -0.5f },
-    
-                { -0.5f, -0.5f, -0.5f },
-                {  0.5f, -0.5f, -0.5f },
-                {  0.5f, -0.5f,  0.5f },
-                { -0.5f, -0.5f,  0.5f },
-            },
-            {
-                0 , 1 , 2 , 2 , 3 , 0 ,    // front
-                4 , 5 , 6 , 6 , 7 , 4 ,    // right
-                8 , 9 , 10, 10, 11, 8 ,    // back
-                12, 13, 14, 14, 15, 12,    // left
-                16, 17, 18, 18, 19, 16,    // up
-                20, 21, 22, 22, 23, 20,    // down
-            }
-        };
-    }
+    using namespace std::views;
 
     mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step)
     {
@@ -76,7 +31,10 @@ namespace algo
         vector<uint32_t> idxs(verts.size());
         std::iota(idxs.begin(), idxs.end(), 0);
 
-        return { verts, idxs };
+        vector<vec3> colors;
+        colors.reserve(verts.size());
+        colors.append_range(repeat(vec3{ 0, 1, 1 }, verts.size()));
+        return { verts, colors, idxs };
     }
 
     mesh_t gen_terrain_mesh()

@@ -24,6 +24,7 @@ namespace algo
     struct Mesh
     {
         vector<vec3> verts; // TODO Replace with our Vertex type
+        vector<vec3> colors;
         vector<uint32_t> idxs;
     };
 
