@@ -67,6 +67,6 @@ namespace algo
 
     mesh_t gen_terrain_mesh(const UserConfig& config)
     {
-        return gen_circle_mesh(config.planet.radius, 3, vec3{0.0f}, 0.03f);
+        return gen_circle_mesh(config.planet.radius, 3, vec3{0.0f}, 0.03f, config.marchingCubes.blendMode);
     }
 }

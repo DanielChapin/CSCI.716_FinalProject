@@ -43,27 +43,27 @@ export const defaultUserConfig: UserConfig = {
     features: {
         seed: randSeed(),
         elevation: {
-            scale: 1,
+            scale: 4,
             octaves: 8,
             persistence: 0.5,
             lacunarity: 2.0,
         },
         temperature: {
             scale: 1,
-            octaves: 8,
+            octaves: 2,
             persistence: 0.5,
             lacunarity: 2.0,
         },
         humidity: {
             scale: 1,
-            octaves: 8,
+            octaves: 2,
             persistence: 0.5,
             lacunarity: 2.0,
         },
     },
     planet: {
-        radius: 1,
-        elevationScale: 3,
+        radius: 0.5,
+        elevationScale: 0.15,
     },
     marchingCubes: {
         blendMode: 'linear',

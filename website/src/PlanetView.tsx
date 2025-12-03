@@ -63,13 +63,14 @@ export default function PlanetView(props: Props) {
             shader.uniforms.u_tempLac = { value: config.features.temperature.lacunarity };
             shader.uniforms.u_humiLac = { value: config.features.humidity.lacunarity };
             shader.uniforms.u_seed = { value: config.features.seed };
+            shader.uniforms.u_ElevationScale = { value: config.planet.elevationScale };
 
             shader.vertexShader = shader.vertexShader.replace('#include <common>', `#include <common>\n${simplexShader}\n${vsDecls}`);
             shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>\n${simplexShader}\n${fsDecls}`);
             shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', `${vsCode}`);
             shader.fragmentShader = shader.fragmentShader.replace('#include <dithering_fragment>', `${fsCode}\n#include <dithering_fragment>`);
         },
-        [vsDecls, fsDecls, vsCode, fsCode, simplexShader, biomes, config]
+        []
     );
 
     useEffect(() => {
@@ -165,7 +166,7 @@ export default function PlanetView(props: Props) {
                 <pointLight position={[5, 5, 5]} intensity={500} color={[1, 0.9, 0.45]} />
                 <pointLight position={[-5, -5, -5]} intensity={250} color={[0.25, 0.2, 0.5]} />
                 <mesh geometry={geometry} ref={meshRef}>
-                    <meshPhongMaterial ref={materialRef} onBeforeCompile={onCompile} wireframe={wireframe} side={2} />
+                    <meshPhongMaterial ref={materialRef} onBeforeCompile={onCompile} wireframe={wireframe} />
                 </mesh>
                 <OrbitControls autoRotate={autoRotate} />
             </Canvas>

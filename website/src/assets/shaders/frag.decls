@@ -1,4 +1,5 @@
 in vec3 v2f_pos;
+in vec3 v2f_posOrig;
 
 struct Biome 
 {
