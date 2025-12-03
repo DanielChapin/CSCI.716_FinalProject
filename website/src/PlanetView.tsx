@@ -120,9 +120,9 @@ export default function PlanetView(props: Props) {
                 />
             </div>
             <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
-                <ambientLight />
-                <pointLight position={[10, 10, 10]} intensity={200} color={[1, 0.9, 0.45]} />
-                <pointLight position={[-10, -10, -10]} intensity={75} color={[0.8, 0.2, 0.95]} />
+                <ambientLight intensity={0.25} />
+                <pointLight position={[5, 5, 5]} intensity={50} color={[1, 0.9, 0.45]} />
+                <pointLight position={[-5, -5, -5]} intensity={25} color={[0.25, 0.2, 0.5]} />
                 <mesh geometry={geometry} ref={meshRef}>
                     <meshPhongMaterial wireframe={wireframe} vertexColors side={2} flatShading={false} />
                 </mesh>
