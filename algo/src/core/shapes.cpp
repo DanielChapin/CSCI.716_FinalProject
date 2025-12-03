@@ -17,7 +17,7 @@ namespace algo
     using glm::vec3;
     using namespace std::views;
 
-    mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step)
+    mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step, MarchingCubesBlendMode blendMode)
     {
         vec3 dims(scale * radius);
         vec3 origin = center - dims / vec3{2};
@@ -28,7 +28,16 @@ namespace algo
             return glm::distance(pos, center) - radius;
         };
 
-        auto verts = marchingCubes(origin, dims, interval, getDensity, 0, blendVec3Linear);
+        const function<vec3(vec3, float, vec3, float)> blend =
+            (blendMode == MarchingCubesBlendMode::LINEAR)
+                ? blendVec3Linear
+            : (blendMode == MarchingCubesBlendMode::CUBIC)
+                ? blendVec3Cubic
+            : (blendMode == MarchingCubesBlendMode::NEAREST)
+                ? blendVec3Nearest
+                : blendVec3Middle;
+
+        auto verts = marchingCubes(origin, dims, interval, getDensity, 0, blend);
         vector<uint32_t> idxs(verts.size());
         std::iota(idxs.begin(), idxs.end(), 0);
 

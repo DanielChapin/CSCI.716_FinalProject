@@ -77,7 +77,7 @@ export default function PlanetView(props: Props) {
             return;
         }
         setGenerating(true);
-        const mesh = algo.gen_terrain_mesh(toEdgeRepr(config));
+        const mesh = algo.gen_terrain_mesh(toEdgeRepr(config, algo));
         const geometry = createGeometry(mesh);
         setGeometry(geometry);
         setGenerating(false);

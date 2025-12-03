@@ -67,19 +67,21 @@ export const defaultUserConfig: UserConfig = {
     },
     marchingCubes: {
         blendMode: 'linear',
-        interval: 0.01,
+        interval: 0.075,
     },
 };
 
-export function toEdgeRepr(config: UserConfig): Edge.UserConfig {
+export function toEdgeRepr(config: UserConfig, module: Edge.MainModule): Edge.UserConfig {
     const {
         features,
-        // marchingCubes: { blendMode, interval },
+        marchingCubes: { blendMode, interval },
         planet,
     } = config;
 
     return {
         features,
+        marchingCubes: { interval, blendMode: module.MarchingCubesBlendMode[blendMode] },
         planet,
-    };
+    } satisfies Edge.UserConfig;
+
 }

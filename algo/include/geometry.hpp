@@ -9,6 +9,9 @@ namespace algo
     using std::vector;
 
     vec3 blendVec3Linear(vec3 a, float aWeight, vec3 b, float bWeight);
+    vec3 blendVec3Cubic(vec3 a, float aWeight, vec3 b, float bWeight);
+    vec3 blendVec3Nearest(vec3 a, float aWeight, vec3 b, float bWeight);
+    vec3 blendVec3Middle(vec3 a, float aWeight, vec3 b, float bWeight);
 
     struct Vertex
     {
