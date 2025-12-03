@@ -72,20 +72,13 @@ namespace algo
         //      x > y > z     means our simplex in hypercube space has the following vertices:
         //      (0, 0, 0) -> (1, 0, 0) -> (1, 1, 0) -> (1, 1, 1)
         //
-        vec3 mid1;
-        vec3 mid2;
-        if (dir0.x > dir0.y)
-        {
-            if (dir0.y > dir0.z) { /* x > y > z */ mid1 = { 1, 0, 0 }; mid2 = { 1, 1, 0 }; }
-            else if (dir0.x > dir0.z) { /* x > z > y */ mid1 = { 1, 0, 0 }; mid2 = { 1, 0, 1 }; }
-            else { /* z > x > y */ mid1 = { 0, 0, 1 }; mid2 = { 1, 0, 1 }; }
-        }
-        else
-        {
-            if (dir0.x > dir0.z) { /* y > x > z */ mid1 = { 0, 1, 0 }; mid2 = { 1, 1, 0 }; }
-            else if (dir0.y > dir0.z) { /* y > z > x */ mid1 = { 0, 1, 0 }; mid2 = { 0, 1, 1 }; }
-            else { /* z > y > x */ mid1 = { 0, 0, 1 }; mid2 = { 0, 1, 1 }; }
-        }
+        // We can use GLM's swizzling for vectors and the step function in a clever way
+        // and let GLM handle the branching.
+        //      comp = (x >= y, y >= z, z >= x)
+        //
+        vec3 comp = glm::step(dir0.yzx(), dir0);
+        vec3 mid1 = comp * (1.f - comp.zxy());
+        vec3 mid2 = 1.f - comp.xzy() * (1.f - comp);
         
         // Now we can figure out what each of the direction vectors are
         vec3 dir1 = dir0 - mid1 + 1.f * SKEW;
