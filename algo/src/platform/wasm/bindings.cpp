@@ -23,17 +23,17 @@ EMSCRIPTEN_BINDINGS(algo)
     emscripten::function("gen_terrain_mesh", &gen_terrain_mesh);
     emscripten::function("simplex3D", &simplex3D);
     emscripten::function("noise3D", &noise3D);
-    
+
     emscripten::function("randv4", static_cast<float (*)(vec4, uint32_t)>(&rand));
     emscripten::function("randv3", static_cast<float (*)(vec3, uint32_t)>(&rand));
     emscripten::function("randv2", static_cast<float (*)(vec2, uint32_t)>(&rand));
-    
+
     value_object<vec4>("vec4")
         .field("x", &vec4::x)
         .field("y", &vec4::y)
         .field("z", &vec4::z)
         .field("w", &vec4::w);
-    
+
     value_object<vec3>("vec3")
         .field("x", &vec3::x)
         .field("y", &vec3::y)
@@ -64,10 +64,21 @@ EMSCRIPTEN_BINDINGS(algo)
         .field("radius", &PlanetConfig::radius)
         .field("elevationScale", &PlanetConfig::elevationScale);
 
+    enum_<MarchingCubesBlendMode>("MarchingCubesBlendMode")
+        .value("linear", MarchingCubesBlendMode::LINEAR)
+        .value("cubic", MarchingCubesBlendMode::CUBIC)
+        .value("nearest", MarchingCubesBlendMode::NEAREST)
+        .value("middle", MarchingCubesBlendMode::MIDDLE);
+
+    value_object<MarchingCubesConfig>("MarchingCubesConfig")
+        .field("blendMode", &MarchingCubesConfig::blendMode)
+        .field("interval", &MarchingCubesConfig::interval);
+
     value_object<UserConfig>("UserConfig")
         .field("features", &UserConfig::features)
-        .field("planet", &UserConfig::planet);
-        
+        .field("planet", &UserConfig::planet)
+        .field("marchingCubes", &UserConfig::marchingCubes);
+
     register_vector<vec3>("vec3_vector");
     register_vector<std::uint8_t>("uint8_vector");
     register_vector<std::uint16_t>("uint16_vector");

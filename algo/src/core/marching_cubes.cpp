@@ -7,19 +7,19 @@
 
 namespace algo
 {
-    using std::pair;
-    using std::array;
-    using std::vector;
-    using std::function;
     using glm::vec3;
+    using std::array;
+    using std::function;
+    using std::pair;
+    using std::vector;
     using namespace std::views;
 
     vector<vec3> marchingCubes(
-        const vec3 origin, 
-        const vec3 dims, 
-        const vec3 interval, 
-        const function<float(vec3)> &getDensity, 
-        const float threshold, 
+        const vec3 origin,
+        const vec3 dims,
+        const vec3 interval,
+        const function<float(vec3)> &getDensity,
+        const float threshold,
         const function<vec3(vec3, float, vec3, float)> &blend)
     {
         vector<vec3> vertices;
@@ -32,8 +32,7 @@ namespace algo
             {
                 for (float z = origin.z; z <= origin.z + dims.z; z += interval.z)
                 {
-                    auto localCorners = array
-                    {
+                    auto localCorners = array{
                         vec3{x, y, z},
                         vec3{x + interval.x, y, z},
                         vec3{x + interval.x, y, z + interval.z},
@@ -44,8 +43,7 @@ namespace algo
                         vec3{x, y + interval.y, z + interval.z},
                     };
 
-                    auto densities = array 
-                    {
+                    auto densities = array{
                         getDensity(localCorners[0]),
                         getDensity(localCorners[1]),
                         getDensity(localCorners[2]),
@@ -66,7 +64,7 @@ namespace algo
                     for (uint8_t i = 0; triTable[cubeIndex][i] != -1; i += 3)
                     {
                         array<vec3, 3> triangle;
-                        
+
                         for (uint8_t j = 0; j < triangle.size(); j++)
                         {
                             int a = cornerA[triTable[cubeIndex][i + j]];

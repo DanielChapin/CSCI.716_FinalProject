@@ -12,9 +12,9 @@ namespace algo
 {
     using glm::vec3;
 
+    using std::function;
     using std::tuple;
     using std::vector;
-    using std::function;
 
     struct NoiseConfig
     {
@@ -38,12 +38,27 @@ namespace algo
         float elevationScale;
     };
 
+    enum class MarchingCubesBlendMode
+    {
+        LINEAR,
+        CUBIC,
+        NEAREST,
+        MIDDLE,
+    };
+
+    struct MarchingCubesConfig
+    {
+        MarchingCubesBlendMode blendMode;
+        float interval;
+    };
+
     struct UserConfig
     {
         FeaturesConfig features;
         PlanetConfig planet;
+        MarchingCubesConfig marchingCubes;
     };
 
-    extern mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step);
+    extern mesh_t gen_circle_mesh(float radius, float scale, vec3 center, float step, MarchingCubesBlendMode blendMode);
     extern mesh_t gen_terrain_mesh(UserConfig);
 }
