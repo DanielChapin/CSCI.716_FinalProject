@@ -121,7 +121,7 @@ export default function UserConfigView(props: Props) {
             </Select>
 
             <Label htmlFor="mc-interval">Sample Interval</Label>
-            <Slider className="max-w-sm" id="mc-interval" min={10} max={250} step={1}
+            <Slider className="max-w-sm" id="mc-interval" min={0.0025} max={0.1} step={0.0001}
                 value={[config.marchingCubes.interval]}
                 onValueChange={values => updateConfig({ marchingCubes: { interval: values[0] } })} />
 
