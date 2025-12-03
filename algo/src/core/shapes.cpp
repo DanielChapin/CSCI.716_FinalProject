@@ -87,7 +87,7 @@ namespace algo
             vec3 normal = glm::normalize(v - center);
             v += jitter * normal;
 
-            const auto &b = BIOMES.find({elevation, temperature, humidity}, OCEAN);
+            const auto &b = BIOMES.find({smooth, temperature, humidity}, OCEAN);
             c = b.color;
         }
 
