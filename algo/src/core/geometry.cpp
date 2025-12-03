@@ -6,9 +6,9 @@ namespace algo
 
     vec3 blendVec3Linear(vec3 a, float aWeight, vec3 b, float bWeight)
     {
-        if (aWeight < 0.00001)
+        if (std::abs(aWeight) < 0.00001)
             return a;
-        if (bWeight < 0.00001)
+        if (std::abs(bWeight) < 0.00001)
             return b;
         if (std::abs(aWeight - bWeight) < 0.00001)
             return a;
