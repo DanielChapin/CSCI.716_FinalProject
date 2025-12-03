@@ -1,36 +1,35 @@
-import { randInt } from "three/src/math/MathUtils.js";
+import { randInt } from 'three/src/math/MathUtils.js';
 
 export type FeaturesConfig = {
-    elevation: NoiseConfig,
-    temperature: NoiseConfig,
-    humidity: NoiseConfig,
+    elevation: NoiseConfig;
+    temperature: NoiseConfig;
+    humidity: NoiseConfig;
 };
 
 export type NoiseConfig = {
-    seed: string,
-    scale: number,
-    octaves: number,
-    persistence: number,
-    lacunarity: number,
+    seed: string;
+    scale: number;
+    octaves: number;
+    persistence: number;
+    lacunarity: number;
 };
 
 export type PlanetConfig = {
-    radius: number,
-    elevationScale: number,
+    radius: number;
+    elevationScale: number;
 };
-
 
 export type MarchingCubesConfig = {
-    blendMode: "linear" | "cubic" | "nearest" | "middle"
-    interval: number,
+    blendMode: 'linear' | 'cubic' | 'nearest' | 'middle';
+    interval: number;
 };
 
-export type MarchingCubesBlendMode = MarchingCubesConfig["blendMode"];
+export type MarchingCubesBlendMode = MarchingCubesConfig['blendMode'];
 
 export type UserConfig = {
-    features: FeaturesConfig,
-    planet: PlanetConfig,
-    marchingCubes: MarchingCubesConfig,
+    features: FeaturesConfig;
+    planet: PlanetConfig;
+    marchingCubes: MarchingCubesConfig;
 };
 
 function randSeed(): string {
@@ -66,7 +65,7 @@ export const defaultUserConfig: UserConfig = {
         elevationScale: 3,
     },
     marchingCubes: {
-        blendMode: "linear",
+        blendMode: 'linear',
         interval: 0.01,
     },
 };

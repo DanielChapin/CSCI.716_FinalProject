@@ -47,6 +47,26 @@ EMSCRIPTEN_BINDINGS(algo)
         .field("vertices", &mesh_t::verts)
         .field("colors", &mesh_t::colors)
         .field("indices", &mesh_t::idxs);
+
+    value_object<NoiseConfig>("NoiseConfig")
+        .field("scale", &NoiseConfig::scale)
+        .field("octaves", &NoiseConfig::octaves)
+        .field("persistence", &NoiseConfig::persistence)
+        .field("lacunarity", &NoiseConfig::lacunarity);
+
+    value_object<FeaturesConfig>("FeaturesConfig")
+        .field("elevation", &FeaturesConfig::elevation)
+        .field("temperature", &FeaturesConfig::temperature)
+        .field("humidity", &FeaturesConfig::humidity)
+        .field("seed", &FeaturesConfig::seed);
+
+    value_object<PlanetConfig>("PlanetConfig")
+        .field("radius", &PlanetConfig::radius)
+        .field("elevationScale", &PlanetConfig::elevationScale);
+
+    value_object<UserConfig>("UserConfig")
+        .field("features", &UserConfig::features)
+        .field("planet", &UserConfig::planet);
         
     register_vector<vec3>("vec3_vector");
     register_vector<std::uint8_t>("uint8_vector");
