@@ -1,8 +1,0 @@
-
-v2f_posOrig = position;
-float elevation = noise3D(position, u_seed, u_elevScale, u_elevLac, u_elevPersistence, u_elevOctaves);
-float clamped = clamp(elevation, 0.5, 1.0);
-float value = smoothstep(0., 1., clamped);
-float jitter = value * value * u_ElevationScale;
-vec3 transformed = position + normal * jitter;
-v2f_pos = transformed;

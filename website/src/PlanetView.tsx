@@ -10,10 +10,8 @@ import { createGeometry } from './lib/geometry';
 import PlanetMenuBar from './PlanetMenubar';
 import { toast } from 'sonner';
 
-import vsDecls from './assets/shaders/vert.decls?raw';
-import fsDecls from './assets/shaders/frag.decls?raw';
-import vsCode from './assets/shaders/vert.code?raw';
-import fsCode from './assets/shaders/frag.code?raw';
+import vertexShader from './assets/shaders/vert.glsl?raw';
+import fragmentShader from './assets/shaders/frag.glsl?raw';
 import simplexShader from './assets/shaders/simplex.glsl?raw';
 import { toEdgeRepr, type UserConfig } from './lib/user-config';
 
@@ -65,10 +63,13 @@ export default function PlanetView(props: Props) {
             shader.uniforms.u_seed = { value: config.features.seed };
             shader.uniforms.u_ElevationScale = { value: config.planet.elevationScale };
 
-            shader.vertexShader = shader.vertexShader.replace('#include <common>', `#include <common>\n${simplexShader}\n${vsDecls}`);
-            shader.fragmentShader = shader.fragmentShader.replace('#include <common>', `#include <common>\n${simplexShader}\n${fsDecls}`);
-            shader.vertexShader = shader.vertexShader.replace('#include <begin_vertex>', `${vsCode}`);
-            shader.fragmentShader = shader.fragmentShader.replace('#include <dithering_fragment>', `${fsCode}\n#include <dithering_fragment>`);
+            shader.vertexShader = shader.vertexShader
+                .replace('#include <common>', `#include <common>\n${simplexShader}\n${vertexShader}`)
+                .replace('#include <begin_vertex>', 'vec3 transformed = vert(position, normal);');
+
+            shader.fragmentShader = shader.fragmentShader
+                .replace('#include <common>', `#include <common>\n${simplexShader}\n${fragmentShader}`)
+                .replace('#include <dithering_fragment>', 'gl_FragColor = frag(gl_FragColor);\n#include <dithering_fragment>');
         },
         []
     );
