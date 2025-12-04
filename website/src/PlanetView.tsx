@@ -1,7 +1,7 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useRef, useState } from 'react';
-import { Mesh, MeshPhongMaterial, Vector3, Vector4, type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes } from 'three';
+import { Mesh, Vector3, Vector4, type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes } from 'three';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
 import { toast } from 'sonner';
@@ -44,7 +44,6 @@ export default function PlanetView(props: Props) {
 
     const meshRef = useRef<Mesh | undefined>(undefined);
     const downloadRef = useRef<HTMLAnchorElement | null>(null);
-    const materialRef = useRef<MeshPhongMaterial | null>(null);
 
     useEffect(() => {
         if (algo) {
@@ -135,8 +134,7 @@ export default function PlanetView(props: Props) {
             </div>
             <Canvas className='absolute inset-0' camera={{ position: [0, 0, 5] }}>
                 <ambientLight intensity={0.25} />
-                <pointLight position={[5, 5, 5]} intensity={500} color={[1, 0.9, 0.45]} />
-                <pointLight position={[-5, -5, -5]} intensity={250} color={[0.25, 0.2, 0.5]} />
+                <directionalLight castShadow intensity={500} color={[1, 1, 1]} position={[0, 0, 1]} />
                 <mesh geometry={geometry} ref={meshRef}>
                     <CustomMeshPhongMaterial
                         commonShaders={[commonShader, simplexShader]}
@@ -148,7 +146,6 @@ export default function PlanetView(props: Props) {
                             u_PlanetConfig: config.planet,
                             u_BiomeCount: BIOMES.length,
                         }}
-                        ref={materialRef}
                         wireframe={wireframe}
                     />
                 </mesh>
