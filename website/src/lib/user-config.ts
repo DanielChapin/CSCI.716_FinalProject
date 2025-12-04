@@ -3,23 +3,24 @@ import * as Edge from '@/transient/algo/algo';
 
 export type FeaturesConfig = {
     seed: string;
+    waterLevel: number;
     elevation: NoiseConfig;
     temperature: NoiseConfig;
     humidity: NoiseConfig;
 };
 
-export type FeaturesConfigVariants = keyof Omit<FeaturesConfig, "seed">;
+export type FeaturesConfigVariants = keyof Omit<Omit<FeaturesConfig, 'seed'>, 'waterLevel'>;
 
 export type NoiseConfig = {
     scale: number;
-    octaves: number;
     persistence: number;
     lacunarity: number;
+    octaves: number;
 };
 
 export type PlanetConfig = {
+    heightAmplitude: number;
     radius: number;
-    elevationScale: number;
 };
 
 export type MarchingCubesConfig = {
@@ -42,6 +43,7 @@ function randSeed(): string {
 export const defaultUserConfig: UserConfig = {
     features: {
         seed: randSeed(),
+        waterLevel: 0.5,
         elevation: {
             scale: 4,
             octaves: 8,
@@ -50,20 +52,20 @@ export const defaultUserConfig: UserConfig = {
         },
         temperature: {
             scale: 1,
-            octaves: 2,
+            octaves: 4,
             persistence: 0.5,
             lacunarity: 2.0,
         },
         humidity: {
             scale: 1,
-            octaves: 2,
+            octaves: 4,
             persistence: 0.5,
             lacunarity: 2.0,
         },
     },
     planet: {
         radius: 0.5,
-        elevationScale: 0.15,
+        heightAmplitude: 0.15,
     },
     marchingCubes: {
         blendMode: 'linear',
@@ -83,5 +85,4 @@ export function toEdgeRepr(config: UserConfig, module: Edge.MainModule): Edge.Us
         marchingCubes: { interval, blendMode: module.MarchingCubesBlendMode[blendMode] },
         planet,
     } satisfies Edge.UserConfig;
-
 }

@@ -35,7 +35,7 @@ namespace algo
     struct PlanetConfig
     {
         float radius;
-        float elevationScale;
+        float heightAmplitude;
     };
 
     enum class MarchingCubesBlendMode

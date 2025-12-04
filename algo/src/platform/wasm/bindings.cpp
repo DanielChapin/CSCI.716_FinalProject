@@ -61,7 +61,7 @@ EMSCRIPTEN_BINDINGS(algo)
 
     value_object<PlanetConfig>("PlanetConfig")
         .field("radius", &PlanetConfig::radius)
-        .field("elevationScale", &PlanetConfig::elevationScale);
+        .field("heightAmplitude", &PlanetConfig::heightAmplitude);
 
     enum_<MarchingCubesBlendMode>("MarchingCubesBlendMode")
         .value("linear", MarchingCubesBlendMode::LINEAR)

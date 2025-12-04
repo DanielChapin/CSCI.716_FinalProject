@@ -1,23 +1,33 @@
 import { OrbitControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes } from 'three';
-import * as THREE from 'three';
+import { useEffect, useRef, useState } from 'react';
+import { Mesh, MeshPhongMaterial, Vector3, Vector4, type BufferGeometry, type BufferGeometryEventMap, type NormalBufferAttributes } from 'three';
 import { GLTFExporter } from 'three/examples/jsm/exporters/GLTFExporter.js';
 
+import { toast } from 'sonner';
 import { useAlgo } from './hooks/use-algo';
 import { createGeometry } from './lib/geometry';
 import PlanetMenuBar from './PlanetMenubar';
-import { toast } from 'sonner';
 
-import vertexShader from './assets/shaders/vert.glsl?raw';
+import hash from 'string-hash';
+import commonShader from './assets/shaders/common.glsl?raw';
 import fragmentShader from './assets/shaders/frag.glsl?raw';
 import simplexShader from './assets/shaders/simplex.glsl?raw';
+import vertexShader from './assets/shaders/vert.glsl?raw';
+import CustomMeshPhongMaterial from './components/three/CustomMeshPhongMaterial';
 import { toEdgeRepr, type UserConfig } from './lib/user-config';
 
 export type Props = {
     config: UserConfig;
 };
+
+const BIOMES = [
+    { min: new Vector3(0.0, 0.0, 0.0), max: new Vector3(0.5, 1, 1), color: new Vector4(0.174, 0.175, 1, 1) }, // OCEAN
+    { min: new Vector3(0.5, 0, 0), max: new Vector3(0.55, 1, 1), color: new Vector4(0.995, 0.921, 0.56, 1) }, // DESERT
+    { min: new Vector3(0.75, 0.3, 0), max: new Vector3(1, 1, 1), color: new Vector4(0.176, 0.186, 0.2, 1) }, // MOUNTAINS
+    { min: new Vector3(0.75, 0, 0), max: new Vector3(1, 0.3, 1), color: new Vector4(0.55, 0.99, 1, 1) }, // TUNDRA
+    { min: new Vector3(0.55, 0, 0), max: new Vector3(0.75, 1, 1), color: new Vector4(0.226, 0.435, 0.205, 1) }, // FOREST
+];
 
 /**
  * @description A 3D viewer for a generated planet mesh.
@@ -32,58 +42,19 @@ export default function PlanetView(props: Props) {
     const [autoRotate, setAutoRotate] = useState(true);
     const [downloading, setDownloading] = useState(false);
 
-    const meshRef = useRef<THREE.Mesh | undefined>(undefined);
+    const meshRef = useRef<Mesh | undefined>(undefined);
     const downloadRef = useRef<HTMLAnchorElement | null>(null);
-    const materialRef = useRef<THREE.MeshPhongMaterial | null>(null);
-
-    const biomes = [
-        { min: new THREE.Vector3(0.0, 0.0, 0.0), max: new THREE.Vector3(0.5, 1, 1), color: new THREE.Vector4(0.174, 0.175, 1, 1) }, // OCEAN
-        { min: new THREE.Vector3(0.5, 0, 0), max: new THREE.Vector3(0.55, 1, 1), color: new THREE.Vector4(0.995, 0.921, 0.56, 1) }, // DESERT
-        { min: new THREE.Vector3(0.75, 0.3, 0), max: new THREE.Vector3(1, 1, 1), color: new THREE.Vector4(0.176, 0.186, 0.2, 1) }, // MOUNTAINS
-        { min: new THREE.Vector3(0.75, 0, 0), max: new THREE.Vector3(1, 0.3, 1), color: new THREE.Vector4(0.55, 0.99, 1, 1) }, // TUNDRA
-        { min: new THREE.Vector3(0.55, 0, 0), max: new THREE.Vector3(0.75, 1, 1), color: new THREE.Vector4(0.226, 0.435, 0.205, 1) }, // FOREST
-    ];
-
-    const onCompile = useMemo(
-        () => (shader: any) => {
-            shader.uniforms.u_Biomes = { value: biomes };
-            shader.uniforms.u_BiomeCount = { value: biomes.length };
-            shader.uniforms.u_elevScale = { value: config.features.elevation.scale };
-            shader.uniforms.u_tempScale = { value: config.features.temperature.scale };
-            shader.uniforms.u_humiScale = { value: config.features.humidity.scale };
-            shader.uniforms.u_elevOctaves = { value: config.features.elevation.octaves };
-            shader.uniforms.u_tempOctaves = { value: config.features.temperature.octaves };
-            shader.uniforms.u_humiOctaves = { value: config.features.humidity.octaves };
-            shader.uniforms.u_elevPersistence = { value: config.features.elevation.persistence };
-            shader.uniforms.u_tempPersistence = { value: config.features.temperature.persistence };
-            shader.uniforms.u_humiPersistence = { value: config.features.humidity.persistence };
-            shader.uniforms.u_elevLac = { value: config.features.elevation.lacunarity };
-            shader.uniforms.u_tempLac = { value: config.features.temperature.lacunarity };
-            shader.uniforms.u_humiLac = { value: config.features.humidity.lacunarity };
-            shader.uniforms.u_seed = { value: config.features.seed };
-            shader.uniforms.u_ElevationScale = { value: config.planet.elevationScale };
-
-            shader.vertexShader = shader.vertexShader
-                .replace('#include <common>', `#include <common>\n${simplexShader}\n${vertexShader}`)
-                .replace('#include <begin_vertex>', 'vec3 transformed = vert(position, normal);');
-
-            shader.fragmentShader = shader.fragmentShader
-                .replace('#include <common>', `#include <common>\n${simplexShader}\n${fragmentShader}`)
-                .replace('#include <dithering_fragment>', 'gl_FragColor = frag(gl_FragColor);\n#include <dithering_fragment>');
-        },
-        []
-    );
+    const materialRef = useRef<MeshPhongMaterial | null>(null);
 
     useEffect(() => {
-        if (!algo) {
-            return;
+        if (algo) {
+            setGenerating(true);
+            const mesh = algo.gen_terrain_mesh(toEdgeRepr(config, algo));
+            const geometry = createGeometry(mesh);
+            setGeometry(geometry);
+            setGenerating(false);
+            return () => geometry.dispose();
         }
-        setGenerating(true);
-        const mesh = algo.gen_terrain_mesh(toEdgeRepr(config, algo));
-        const geometry = createGeometry(mesh);
-        setGeometry(geometry);
-        setGenerating(false);
-        return () => geometry.dispose();
     }, [algo, config]);
 
     if (!algo) {
@@ -167,7 +138,19 @@ export default function PlanetView(props: Props) {
                 <pointLight position={[5, 5, 5]} intensity={500} color={[1, 0.9, 0.45]} />
                 <pointLight position={[-5, -5, -5]} intensity={250} color={[0.25, 0.2, 0.5]} />
                 <mesh geometry={geometry} ref={meshRef}>
-                    <meshPhongMaterial ref={materialRef} onBeforeCompile={onCompile} wireframe={wireframe} />
+                    <CustomMeshPhongMaterial
+                        commonShaders={[commonShader, simplexShader]}
+                        vertexShader={vertexShader}
+                        fragmentShader={fragmentShader}
+                        uniforms={{
+                            u_Biomes: BIOMES,
+                            u_FeaturesConfig: { ...config.features, seed: hash(config.features.seed) },
+                            u_PlanetConfig: config.planet,
+                            u_BiomeCount: BIOMES.length,
+                        }}
+                        ref={materialRef}
+                        wireframe={wireframe}
+                    />
                 </mesh>
                 <OrbitControls autoRotate={autoRotate} />
             </Canvas>
