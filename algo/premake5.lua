@@ -112,10 +112,10 @@ project "algo"
 
 		postbuildcommands {
 			'{MKDIR} "../website/src/transient/algo/"',
-			'{MKDIR} "../website/public/transient/"',
+			'{MKDIR} "../website/src/assets/transient/"',
             '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.js" "../website/src/transient/algo/"',
             '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.d.ts" "../website/src/transient/algo/"',
-            '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.wasm" "../website/public/transient/"',
+            '{COPYFILE} "%{cfg.buildtarget.directory}/%{prj.name}.wasm" "../website/src/assets/transient/"',
         }
 
 	filter {}

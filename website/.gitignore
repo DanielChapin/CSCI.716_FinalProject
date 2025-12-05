@@ -24,5 +24,4 @@ dist-ssr
 *.sw?
 
 # Auto-generated files
-src/transient/*
-public/transient/*
+**/transient/
