@@ -79,15 +79,15 @@ namespace algo
                 config.features.humidity.persistence,
                 config.features.humidity.octaves);
 
-            float clamped = glm::clamp(elevation, 0.45f, 1.0f);
-            float smooth = glm::smoothstep(0.f, 1.f, clamped);
-            float jitter = smooth * smooth * .05f * config.planet.elevationScale;
+            elevation = glm::clamp(elevation, 0.35f, 1.0f);
+            elevation = glm::smoothstep(0.f, 1.f, elevation);
+            float jitter = elevation * elevation * .05f * config.planet.elevationScale;
 
             // TODO: Our marching cubes should generate smooth normals for irregular shapes?
             vec3 normal = glm::normalize(v - center);
             v += jitter * normal;
 
-            const auto &b = BIOMES.find({smooth, temperature, humidity}, OCEAN);
+            const auto &b = BIOMES.find({elevation, temperature, humidity}, OCEAN);
             c = b.color;
         }
 
