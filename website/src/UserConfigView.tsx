@@ -41,7 +41,7 @@ export default function UserConfigView(props: Props) {
     }
 
     return <div className="flex flex-col w-full h-full">
-        <ScrollArea className="flex flex-col p-2 w-full h-full">
+        <ScrollArea className="flex flex-col w-full h-full">
             <p className="text-xl"><b>RNG Parameters</b></p>
 
             <Label htmlFor="seed">Seed</Label>
@@ -113,12 +113,16 @@ export default function UserConfigView(props: Props) {
                     <SelectGroup>
                         <SelectLabel>Blend Modes</SelectLabel>
                         <SelectItem value="linear">Linear</SelectItem>
-                        <SelectItem value="cubic">Cubic</SelectItem>
+                        <SelectItem value="cubic">Cubic*</SelectItem>
                         <SelectItem value="nearest">Nearest</SelectItem>
                         <SelectItem value="middle">Middle</SelectItem>
                     </SelectGroup>
                 </SelectContent>
             </Select>
+
+            {config.marchingCubes.blendMode === "cubic" && <p className="text-sm text-secondary">
+                *The cubic vertex blending mode is added as a demonstration of the requirement of symmetry of the vertex blending mode.
+            </p>}
 
             <Label htmlFor="mc-interval">Sample Interval</Label>
             <Slider className="max-w-sm" id="mc-interval" min={0.0025} max={0.1} step={0.0001}
