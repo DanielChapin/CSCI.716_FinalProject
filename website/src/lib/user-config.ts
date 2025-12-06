@@ -19,8 +19,8 @@ export type NoiseConfig = {
 };
 
 export type PlanetConfig = {
-    heightAmplitude: number;
     radius: number;
+    heightAmplitude: number;
 };
 
 export type MarchingCubesConfig = {

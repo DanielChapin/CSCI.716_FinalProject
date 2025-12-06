@@ -48,8 +48,12 @@ export default function PlanetView(props: Props) {
     useEffect(() => {
         if (algo) {
             setGenerating(true);
+            console.log(`Generating terrain mesh with sample interval: '${config.marchingCubes.interval}'...`);
+            const startTime = Date.now();
             const mesh = algo.gen_terrain_mesh(toEdgeRepr(config, algo));
             const geometry = createGeometry(mesh);
+            const timeTaken = Date.now() - startTime;
+            console.log(`Took ${timeTaken}ms.`);
             setGeometry(geometry);
             setGenerating(false);
             return () => geometry.dispose();

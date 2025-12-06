@@ -51,20 +51,24 @@ namespace algo
         }
     };
 
+    const float WATER_LEVEL = 0.35f;
+    
     // FEATURES:
     // 
     //  x - Elevation
     //  y - Temperature
     //  z - Humidity/Precipitation
     // 
-    const Biome OCEAN{ "OCEAN",   { 0,     0,    0    }, { 0.35f, 1,    1    }, { 0.174f, 0.475f, 1,      1 } };
-    const Biome FOREST{ "FOREST", { 0.35f, 0,    0    }, { 0.75f, 0.8f, 1    }, { 0.226f, 0.435f, 0.205f, 1 } };
+    const Biome OCEAN{ "OCEAN",   { 0,     0,    0    }, { WATER_LEVEL, 1,    1    }, { 0.174f, 0.175f, 1,      1 }};
     const BiomeMap BIOMES = 
     {
         OCEAN,
-        Biome{ "TUNDRA",     vec3{ 0.75f, 0,    0    }, { 1,     0.3f, 0.5f }, { 0.550f, 0.990f, 1,      1 } },
-        Biome{ "MOUNTAINS",  vec3{ 0.55f, 0,    0    }, { 1,     1,    1    }, { 0.176f, 0.186f, 0.2f,   1 } },
-        Biome{ "DESERT",     vec3{ 0.35f, 0.8f, 0    }, { 0.75f, 1,    0.5f }, { 0.995f, 0.921f, 0.56f,  1 } },
-        FOREST
+        Biome{ "BEACH",           vec3{ 0.35f, 0,    0    }, { 0.38f, 1,    1    }, { 0.980f, 0.858f, 0.62f,  1 } },
+        Biome{ "FOREST",          vec3{ 0.38f, 0.5f, 0.5f }, { 0.55f, 1,    1    }, { 0.226f, 0.435f, 0.205f, 1 } },
+        Biome{ "TAIGA",           vec3{ 0.38f, 0,    0.5f }, { 0.65f, 0.5f, 1    }, { 0.226f, 0.435f, 0.205f, 1 } },
+        Biome{ "DESERT",          vec3{ 0.38f, 0,    0    }, { 0.65f, 1,    0.5f }, { 0.830f, 0.554f, 0.202f, 1 } },
+        Biome{ "DEEP FOREST",     vec3{ 0.55f, 0.5f, 0.5f }, { 0.65f, 1,    1    }, { 0.004f, 0.210f, 0.004f, 1 } },
+        Biome{ "MOUNTAINS",       vec3{ 0.65f, 0,    0    }, { 0.85f, 1,    1    }, { 0.176f, 0.186f, 0.2f,   1 } },
+        Biome{ "TUNDRA",          vec3{ 0.85f, 0,    0    }, { 1,     1,    1    }, { 0.718f, 0.923f, 1,      1 } },
     };
 }
