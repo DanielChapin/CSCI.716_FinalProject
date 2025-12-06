@@ -120,7 +120,7 @@ export default function UserConfigView(props: Props) {
                 </SelectContent>
             </Select>
 
-            {config.marchingCubes.blendMode === "cubic" && <p className="text-sm text-secondary">
+            {config.marchingCubes.blendMode === "cubic" && <p className="text-sm">
                 *The cubic vertex blending mode is added as a demonstration of the requirement of symmetry of the vertex blending mode.
             </p>}
 

@@ -5,11 +5,15 @@ import UserConfigView from "./UserConfigView";
 import { defaultUserConfig, type UserConfig } from "./lib/user-config";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "./components/ui/tabs";
 import AlgoOverview from "./AlgoOverview";
+import { ModeToggle } from "./components/mode-switcher";
 
 function App() {
     const [userConfig, setUserConfig] = useState<UserConfig>({ ...defaultUserConfig });
     return (
-        <div className="max-h-dvh h-dvh items-center justify-center">
+        <div className="max-h-dvh h-dvh items-center justify-center relative">
+            <div className="absolute right-1 top-1 z-50">
+                <ModeToggle />
+            </div>
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel>
                     <Tabs className="p-1 flex flex-col h-full flex-nowrap" defaultValue="planet-gen">
