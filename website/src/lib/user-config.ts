@@ -8,7 +8,7 @@ export type FeaturesConfig = {
     humidity: NoiseConfig;
 };
 
-export type FeaturesConfigVariants = keyof Omit<FeaturesConfig, "seed">;
+export type FeaturesConfigVariants = keyof Omit<FeaturesConfig, 'seed'>;
 
 export type NoiseConfig = {
     scale: number;
@@ -83,5 +83,4 @@ export function toEdgeRepr(config: UserConfig, module: Edge.MainModule): Edge.Us
         marchingCubes: { interval, blendMode: module.MarchingCubesBlendMode[blendMode] },
         planet,
     } satisfies Edge.UserConfig;
-
 }
