@@ -12,19 +12,21 @@ function App() {
         <div className="max-h-dvh h-dvh items-center justify-center">
             <ResizablePanelGroup direction="horizontal">
                 <ResizablePanel>
-                    <Tabs className="p-1 flex flex-col h-full overflow-clip" defaultValue="planet-gen">
+                    <Tabs className="p-1 flex flex-col h-full flex-nowrap" defaultValue="planet-gen">
                         <div>
-                            <TabsList className="">
+                            <TabsList>
                                 <TabsTrigger value="planet-gen">Planet Generation</TabsTrigger>
                                 <TabsTrigger value="overview">Algorithm Overview</TabsTrigger>
                             </TabsList>
                         </div>
-                        <TabsContent className="pl-1 flex-1" value="planet-gen">
-                            <UserConfigView onGenerate={setUserConfig} />
-                        </TabsContent>
-                        <TabsContent className="pl-1 flex-1 overflow-clip" value="overview">
-                            <AlgoOverview />
-                        </TabsContent>
+                        <div className="flex-1 min-w-0 min-h-0 overflow-hidden">
+                            <TabsContent className="h-full" value="planet-gen">
+                                <UserConfigView onGenerate={setUserConfig} />
+                            </TabsContent>
+                            <TabsContent className="h-full" value="overview">
+                                <AlgoOverview />
+                            </TabsContent>
+                        </div>
                     </Tabs>
                 </ResizablePanel>
                 <ResizableHandle withHandle />
