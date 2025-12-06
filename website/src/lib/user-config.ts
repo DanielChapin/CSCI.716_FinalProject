@@ -19,7 +19,7 @@ export type NoiseConfig = {
 
 export type PlanetConfig = {
     radius: number;
-    elevationScale: number;
+    heightAmplitude: number;
 };
 
 export type MarchingCubesConfig = {
@@ -63,7 +63,7 @@ export const defaultUserConfig: UserConfig = {
     },
     planet: {
         radius: 1,
-        elevationScale: 3,
+        heightAmplitude: 3,
     },
     marchingCubes: {
         blendMode: 'linear',

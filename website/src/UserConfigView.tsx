@@ -130,15 +130,15 @@ export default function UserConfigView(props: Props) {
                     onValueChange={(values) => updateConfig({ planet: { radius: values[0] } })}
                 />
 
-                <Label htmlFor='elevation-scale'>Elevation Scale</Label>
+                <Label htmlFor='height-amplitude'>Height Amplitude</Label>
                 <Slider
                     className='max-w-sm'
-                    id='elevation-scale'
+                    id='height-amplitude'
                     min={0.1}
                     max={10}
                     step={0.1}
-                    value={[config.planet.elevationScale]}
-                    onValueChange={(values) => updateConfig({ planet: { elevationScale: values[0] } })}
+                    value={[config.planet.heightAmplitude]}
+                    onValueChange={(values) => updateConfig({ planet: { heightAmplitude: values[0] } })}
                 />
 
                 <Separator className='m-2' orientation='horizontal' />

@@ -81,7 +81,7 @@ namespace algo
 
             elevation = glm::clamp(elevation, 0.35f, 1.0f);
             elevation = glm::smoothstep(0.f, 1.f, elevation);
-            float jitter = elevation * elevation * .05f * config.planet.elevationScale;
+            float jitter = elevation * elevation * .05f * config.planet.heightAmplitude;
 
             // TODO: Our marching cubes should generate smooth normals for irregular shapes?
             vec3 normal = glm::normalize(v - center);
