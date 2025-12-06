@@ -139,21 +139,22 @@ export default function AlgoOverview() {
                     <p>
                         On it's own, Simplex noise might not yield super interesting results. So we layer multiple instances of Simplex noise (called
                         "octaves") by adding up the outputs and normalizing them so they remain within the [0, 1) range. The following parameters give
-                        as the ability to vary each layer:
+                        us the ability to vary each layer:
                         <ul>
                             <li className='not-prose'>
-                                <b>Scale</b>: how "zoomed-out" the simplex noise is, the higher the value the faster the change between inputs.
+                                <Code language='cpp' text='scale' theme={codeTheme} /> how "zoomed-out" the simplex noise is, the higher the value the
+                                faster the change between inputs.
                             </li>
                             <li className='not-prose'>
-                                <b>Octaves</b>: the number of layers of simplex noise.
+                                <Code language='cpp' text='octaves' theme={codeTheme} /> the number of layers of simplex noise.
                             </li>
                             <li className='not-prose'>
-                                <b>Persistence</b>: the effectiveness of each successive octave in contributing to the final output (0.5 means each
-                                octave only contributes 50% of its value compared to the last).
+                                <Code language='cpp' text='persistence' theme={codeTheme} /> the effectiveness of each successive octave in
+                                contributing to the final output (0.5 means each octave only contributes 50% of its value compared to the last).
                             </li>
                             <li className='not-prose'>
-                                <b>Lacunarity</b>: how much the scale increases by for each successive octave (2.0 means each octave has twice the
-                                scale than the last).
+                                <Code language='cpp' text='lacunarity' theme={codeTheme} /> how much the scale increases by for each successive octave
+                                (2.0 means each octave has twice the scale than the last).
                             </li>
                         </ul>
                         Given these parameters we can produce a result that looks like the following:
